@@ -1,4 +1,5 @@
 require('./Config');
+const dotenv = require("dotenv");
 const cors = require('cors');
 const adminModel = require('./Admin');
 const express = require('express');
@@ -7,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 const Notes = require('./Notes');
 const User = require('./User');
-
+dotenv.config();
 
 app.post('/login',async (req,res)=>{
     console.log("Called");
@@ -149,4 +150,6 @@ app.delete('/deleteuser/:key',async (req,res)=>{
     res.send(result);
 });
 
-app.listen(4500);
+app.listen(process.env.PORT, ()=>{
+    console.log('App is running on port 4500')
+});
