@@ -10,6 +10,18 @@ const Notes = require('./Notes');
 const User = require('./User');
 dotenv.config();
 
+app.post('/register-admin', async(req,res) => {
+    try {
+        if(req.headers['x-signature'] !== "hassan"){
+            return res.status(400).send({ msg: 'Invalid signature'});
+        }
+         const newAdmin = await adminModel.create(req.body);
+        res.status(201).send({msg: 'Admin created'});
+    } catch (error) {
+        res.status(500).send({ msg: 'Server error'});
+    }
+})
+
 app.post('/login',async (req,res)=>{
     console.log("Called");
     if(req.body.username && req.body.password){
@@ -151,5 +163,5 @@ app.delete('/deleteuser/:key',async (req,res)=>{
 });
 
 app.listen(process.env.PORT, ()=>{
-    console.log('App is running on port 4500')
+    console.log(`App is running on port ${process.env.PORT}`)
 });
